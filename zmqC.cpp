@@ -21,7 +21,14 @@
 
 int main () {
 	IPC test;
-	test.startServer();
+	//test.startServer();
+
+	if(test.isServerWorking()){
+		std::cout<<"working"<<std::endl;;
+	}else{
+		std::cout<<"not working"<<std::endl;
+	}
+
 
 	return 0;
 }

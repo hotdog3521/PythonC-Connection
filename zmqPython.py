@@ -19,20 +19,26 @@ row = [1,2,3,4,5,6]
 row_json = json.dumps(row)
 print row_json
 
+
 for it in range(10):
-	
-	hello = test(socket)
-	hello.sendMessage(row_json)
-	print "-------"
+	user_input = raw_input("waiting for user's input:")
+	if user_input == "":
 
-message = socket.recv()
-print message
-dataVector = []
+		hello = test(socket)
+		hello.sendMessage(row_json)
+		print "-------"
 
-dataVector = message.split(',')
-dataVector_1 = []
-for it in dataVector:
-	integer = int(it)
-	dataVector_1.append(integer)
+		message = socket.recv()
+		print message
+		dataVector = []
 
-print dataVector_1
+		dataVector = message.split(',')
+		dataVector_1 = []
+		for it in dataVector:
+			integer = int(it)
+			dataVector_1.append(integer)
+
+		print dataVector_1
+	else:
+		message = socket.recv()
+		print message

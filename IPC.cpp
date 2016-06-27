@@ -44,6 +44,18 @@ void IPC::startServer(){
               data.push_back(element);
           }
       }
+      //sending vector to hit and run
+
+
+
+
+
+      //end of sending vector to hit and run
+
+      //getting vector from hit and run
+
+      //end of getting vector from hit and run
+
 
       //make string to send measued data from HIT and RUN 
       //make it string and send it to python and python can parse it easily
@@ -77,6 +89,13 @@ void IPC::startServer(){
   * that answer to establishConnection in HitRun.
   */ 
 bool IPC::isServerWorking(){
+
+    //sending message
+    std::string heartbeat = "heartbeat";
+    zmq::message_t H_Message (heartbeat.size());
+    const void * a = heartbeat.c_str();
+    memcpy (H_Message.data(), a, heartbeat.size());
+    socket.send(H_Message);
 
 
 }
