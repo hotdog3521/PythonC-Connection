@@ -9,14 +9,17 @@
 #ifndef _WIN32
 #include <unistd.h>
 #include "IPC.h"
+#include "HIT.h"
 #else
 #include <windows.h>
+#include <thread>
 
 #define sleep(n)	Sleep(n)
 #endif
 
-int main () {
 
+
+int main () {
 	IPC test;
 	test.startServer();
 

@@ -9,8 +9,6 @@
 #include <vector>
 #include <string>
 #include <sstream>
-//#include <json/json.h>
-
 #include "IPC.h"
 #include "zmq.hpp"
 #include <string>
@@ -34,26 +32,41 @@ void IPC::startServer(){
 
       //in case of getting string from the request
       //getting vector object from request
-      std::string printout = std::string(static_cast<char*>(request.data()), request.size());
-      std::cout<<printout<<std::endl;
-      //send the vector to hit and run
-      //get the measured data(vector) from it and run
-      //
-      std::istringstream ss(printout);
-      std::string token;
+      std::string str = std::string(static_cast<char*>(request.data()), request.size());
+      
+      //Parse data from python (getting number) and make it vector
+      //so that Hit and Run can making data with that easily
 
-      while(std::getline(ss, token, ',')) {
-          std::cout << token << '\n';
+      std::vector<int> data;
+      for(std::string::iterator it = str.begin(); it != str.end(); ++it) {
+          if(isdigit(*it)) {
+              int element = *it - '0';
+              data.push_back(element);
+          }
       }
 
+      //make string to send measued data from HIT and RUN 
+      //make it string and send it to python and python can parse it easily
+      std::stringstream ss;
+      for(int i = 0; i < data.size(); i++) {
+        if(i != data.size()-1){
+            ss << data[i] << ",";
+        }else{
+            ss << data[i];
+        }
+      }
       // Do some 'work'
+      std::string outMessage;
+      ss >> outMessage;
+      
       sleep(1);
 
-      // Send reply back to client
-      zmq::message_t reply (19);
-      const void * a = printout.c_str();
-      memcpy (reply.data(), a, 19);
+      // Send the string to python
+      zmq::message_t reply (outMessage.size());
+      const void * a = outMessage.c_str();
+      memcpy (reply.data(), a, outMessage.size());
       socket.send(reply);
+      
     }
 
 }
@@ -64,6 +77,7 @@ void IPC::startServer(){
   * that answer to establishConnection in HitRun.
   */ 
 bool IPC::isServerWorking(){
+
 
 }
 /**
@@ -91,5 +105,5 @@ void IPC::getData(std::vector<int> msg){
   * Python server. 
   */
 void IPC::sendData(std::vector<int> msg){
-  //when HIT AND RUN send the data from 
+  //when HIT AND RUN send the data  
 }
