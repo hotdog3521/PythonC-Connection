@@ -36,7 +36,6 @@ void IPC::startServer(){
       
       //Parse data from python (getting number) and make it vector
       //so that Hit and Run can making data with that easily
-
       std::vector<int> data;
       for(std::string::iterator it = str.begin(); it != str.end(); ++it) {
           if(isdigit(*it)) {
@@ -45,11 +44,7 @@ void IPC::startServer(){
           }
       }
       //sending vector to hit and run
-
-
-
-
-
+      vector_data = data;
       //end of sending vector to hit and run
 
       //getting vector from hit and run
@@ -71,7 +66,7 @@ void IPC::startServer(){
       std::string outMessage;
       ss >> outMessage;
       
-      sleep(1);
+      sleep(10);
 
       // Send the string to python
       zmq::message_t reply (outMessage.size());
@@ -90,12 +85,33 @@ void IPC::startServer(){
   */ 
 bool IPC::isServerWorking(){
 
+
+  // running time measurement for recursive
+    clock_t Rstart, Rfinish;
+    double Rdur;
+
+    Rstart = clock();//start time
+   
     //sending message
     std::string heartbeat = "heartbeat";
     zmq::message_t H_Message (heartbeat.size());
     const void * a = heartbeat.c_str();
     memcpy (H_Message.data(), a, heartbeat.size());
     socket.send(H_Message);
+
+
+
+
+    Rfinish = clock();//ending time
+
+    Rdur = (double)(Rfinish - Rstart);
+    Rdur /= (CLOCKS_PER_SEC);
+    std::cout << "running time in recursive : " << Rdur << std::endl;
+
+
+
+
+
 
 
 }
@@ -111,10 +127,10 @@ bool IPC::wasDataReceived(){
   * Get the data from the Python server and store it as a vector.
   * Possibly return the vector.......???
   */
-void IPC::getData(std::vector<int> msg){
+std::vector<int> IPC::getData(){
   //when IPC get the message(data) from python,
   //IPC also process it and send it to HIT AND RUN
-
+  return vector_data;
 
 }
 

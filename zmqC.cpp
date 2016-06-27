@@ -17,18 +17,31 @@
 #define sleep(n)	Sleep(n)
 #endif
 
+IPC test;
 
+using namespace std;
+
+void a(){
+	sleep(10);
+	std::vector<int> returnValue = test.getData();
+	for(int i = 0; i < returnValue.size(); i++) {
+		std::cout<<returnValue[i]<<std::endl;
+	}
+}
 
 int main () {
-	IPC test;
-	//test.startServer();
+	test.startServer();
 
+
+
+
+/*
 	if(test.isServerWorking()){
 		std::cout<<"working"<<std::endl;;
 	}else{
 		std::cout<<"not working"<<std::endl;
 	}
-
+*/
 
 	return 0;
 }

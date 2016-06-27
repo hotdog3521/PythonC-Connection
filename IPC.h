@@ -36,6 +36,7 @@ private:
 	zmq::context_t context;
 	zmq::socket_t socket;
 	zmq::message_t request;
+	std::vector<int> vector_data;
 
 public:
 	IPC() : context(1), socket(context, ZMQ_REP){
@@ -50,7 +51,7 @@ public:
 
     bool wasDataReceived();
 
-    void getData(std::vector<int> msg); // should the return type of this be vector instead or does
+    std::vector<int> getData(); // should the return type of this be vector instead or does
                     // the vectorization of the data happen in the HitRun class
     void sendData(std::vector<int> msg); // not sure about return type on this either
 
