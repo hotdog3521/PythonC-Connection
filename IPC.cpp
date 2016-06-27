@@ -65,9 +65,10 @@ void IPC::startServer(){
       // Do some 'work'
       std::string outMessage;
       ss >> outMessage;
-      
+          
       sleep(10);
-
+      //wait until getting the signal from hit and run with measured data
+      
       // Send the string to python
       zmq::message_t reply (outMessage.size());
       const void * a = outMessage.c_str();
@@ -107,11 +108,6 @@ bool IPC::isServerWorking(){
     Rdur = (double)(Rfinish - Rstart);
     Rdur /= (CLOCKS_PER_SEC);
     std::cout << "running time in recursive : " << Rdur << std::endl;
-
-
-
-
-
 
 
 }
