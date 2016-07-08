@@ -22,7 +22,7 @@
 #endif
 
 void IPC::startServer(){
-  
+
     socket.bind ("tcp://*:5555");
     while (true) {
       zmq::message_t request;
@@ -38,23 +38,17 @@ void IPC::startServer(){
       vector_data = generateVector(std::string(static_cast<char*>(request.data()), request.size()));
 
       std::string outMessage = generateString(vector_data);
-      
+      testingData = outMessage;
       //Communication between IPC and hit and run starts from here
       //getting csv file from hit and run
       //getting the signal so it knows if csv file was updated.
       //eventually it sends string to Hit and Run and get the result from it.
       std::cout<<outMessage<<std::endl;
       
-      /*  it can not be used for some errors.
-      zmq::message_t message_to_HR (outMessage.size());
-      const void * b = outMessage.c_str();
-      memcpy (message_to_HR.data(), b, outMessage.size());
-      socket_HR.send(message_to_HR);
-      */
-      //end of interaction between IPC and Hit and Run
-
-      sleep(1);
+      sleep(2);
       //wait until getting the signal from hit and run with measured data
+
+      outMessage = std::to_string(toPython);
 
       // Send the string to python
       zmq::message_t reply (outMessage.size());
@@ -121,8 +115,10 @@ std::vector<int> IPC::getData(){
   * Gets the data from sendVector in HitRun and sends it to the 
   * Python server. 
   */
-void IPC::sendData(std::vector<int> msg){
-  //when HIT AND RUN send the data  
+int IPC::sendData(int integerData){
+  //when HIT AND RUN send the data
+  toPython = integerData;
+
 }
 std::vector<int> IPC::generateVector(std::string python_data) {
 

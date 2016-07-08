@@ -60,14 +60,24 @@ void printout() {
 //getting data from IPC and 
 
 	while(true) {
+		if(test.wasDataReceived()) {
+			//if IPC gets data from python
+			//process it
+			std::cout<<"Hit and Run : "<< test.testingData << std::endl;
+			//have to increment the value so that we can check it
+			//string to integer
+			int element = std::stoi(test.testingData)+10;
+			test.sendData(element);
+
+		}
 
 
-
-		break;
 	}
+	/*
 	for(int i = 0; i < recordVector.size(); i++) {
 		cout<<recordVector[i]<<endl;
 	}
+	*/
 }
 void runServer() {
 	test.startServer();
@@ -75,11 +85,10 @@ void runServer() {
 
 int main () {
 
-
-	//test.startServer();
+//test.startServer();
   std::thread first (runServer);
-  std::thread second (printout);  // spawn new thread that calls bar(0)
-             // pauses until first finishes
+  std::thread second (printout);  
+
   first.join();
   second.join();               // pauses until second finishes
 
