@@ -63,7 +63,6 @@ void printout() {
 		if(test.wasDataReceived()) {
 			//if IPC gets data from python
 			//process it
-			std::cout<<"Hit and Run : "<< test.testingData << std::endl;
 			//have to increment the value so that we can check it
 			//string to integer
 			int element = std::stoi(test.testingData)+10;
