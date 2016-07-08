@@ -18,15 +18,19 @@ import json
 row = [1,2,3,4,5,6]
 row_json = json.dumps(row)
 print row_json
-
+incrementor = 0;
 
 for it in range(10):
 	user_input = raw_input("waiting for user's input:")
 	if user_input == "":
 
 		hello = test(socket)
-		hello.sendMessage(row_json)
+		numJson = json.dumps(incrementor)
+		hello.sendMessage(numJson)
+		print numJson;
+		incrementor += 1
 		print "-------"
+
 
 		message = socket.recv()
 		print message

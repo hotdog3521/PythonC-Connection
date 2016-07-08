@@ -7,6 +7,7 @@
 #include "zmq.hpp"
 #include <string>
 #include <iostream>
+#include <fstream>
 #ifndef _WIN32
 #include <unistd.h>
 #else
@@ -32,16 +33,17 @@
 
 class IPC {
 private:
-
 	zmq::context_t context;
+	zmq::context_t context_HR;
 	zmq::socket_t socket;
+	zmq::socket_t socket_HR;
 	zmq::message_t request;
-	std::vector<int> vector_data;
+	std::vector<int> vector_data; //this is vector data file that is sent to hand c++ so it can process it.
+	std::vector<int> csv_vector; //it can be used in order to generate csv file.
+	bool isReceieved = false;
 
 public:
-	IPC() : context(1), socket(context, ZMQ_REP){
-		//zmq::context_t context (1);
-		//zmq::socket_t socket (context, ZMQ_REP);
+	IPC() : context(1), context_HR(2), socket(context, ZMQ_REP), socket_HR(context, ZMQ_REP) {
 
 	}
 
@@ -54,6 +56,11 @@ public:
     std::vector<int> getData(); // should the return type of this be vector instead or does
                     // the vectorization of the data happen in the HitRun class
     void sendData(std::vector<int> msg); // not sure about return type on this either
+	
+	std::vector<int> generateVector(std::string python_data);
 
+	std::string generateString(std::vector<int> vector_c);
+
+	void generateCSV(std::string path, std::vector<int> new_data);
 };
 #endif

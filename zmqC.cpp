@@ -6,18 +6,21 @@
 #include "zmq.hpp"
 #include <string>
 #include <iostream>
+#include <thread>
 #ifndef _WIN32
 #include <unistd.h>
 #include "IPC.h"
 #include "HIT.h"
 #else
 #include <windows.h>
-#include <thread>
+
 
 #define sleep(n)	Sleep(n)
 #endif
 
 IPC test;
+zmq::context_t context(1);
+zmq::socket_t socket(context, ZMQ_REP);
 
 using namespace std;
 
@@ -28,20 +31,60 @@ void a(){
 		std::cout<<returnValue[i]<<std::endl;
 	}
 }
+void hitAndRun(){
+	socket.bind ("tcp://*:9999");
+
+    while (true) {
+      zmq::message_t request;
+
+      // Wait for next request from client
+      socket.recv (&request);
+      //getting the data from IPC
+      std::string received_data = std::string(static_cast<char*>(request.data()), request.size());
+
+      //process it with received_data
+      
+      sleep(1);
+      //wait until getting the signal from hit and run with measured data
+
+      // Send the string to python, outmessage is a string
+      std::string to_IPC = "recieved"; 
+      zmq::message_t reply (to_IPC.size());
+      const void * a = to_IPC.c_str();
+      memcpy (reply.data(), a, to_IPC.size());
+      socket.send(reply);
+      
+    }
+}
+void printout() {
+//getting data from IPC and 
+
+	while(true) {
+
+
+
+		break;
+	}
+	for(int i = 0; i < recordVector.size(); i++) {
+		cout<<recordVector[i]<<endl;
+	}
+}
+void runServer() {
+	test.startServer();
+}
 
 int main () {
-	test.startServer();
 
 
+	//test.startServer();
+  std::thread first (runServer);
+  std::thread second (printout);  // spawn new thread that calls bar(0)
+             // pauses until first finishes
+  first.join();
+  second.join();               // pauses until second finishes
 
+  std::cout << "foo and bar completed.\n";
 
-/*
-	if(test.isServerWorking()){
-		std::cout<<"working"<<std::endl;;
-	}else{
-		std::cout<<"not working"<<std::endl;
-	}
-*/
 
 	return 0;
 }
