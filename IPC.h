@@ -34,9 +34,7 @@
 class IPC {
 private:
 	zmq::context_t context;
-	zmq::context_t context_HR;
 	zmq::socket_t socket;
-	zmq::socket_t socket_HR;
 	zmq::message_t request;
 	std::vector<int> vector_data; //this is vector data file that is sent to hand c++ so it can process it.
 	std::vector<int> csv_vector; //it can be used in order to generate csv file.

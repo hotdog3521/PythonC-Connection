@@ -22,9 +22,8 @@
 #endif
 
 void IPC::startServer(){
+  
     socket.bind ("tcp://*:5555");
-    socket_HR.bind ("tcp://*:9999");
-
     while (true) {
       zmq::message_t request;
 
@@ -88,8 +87,6 @@ bool IPC::isServerWorking(){
     const void * a = heartbeat.c_str();
     memcpy (H_Message.data(), a, heartbeat.size());
     socket.send(H_Message);
-
-
 
 
     Rfinish = clock();//ending time
