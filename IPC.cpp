@@ -55,20 +55,15 @@ void IPC::startServer(){
       const void * a = outMessage.c_str();
       memcpy (reply.data(), a, outMessage.size());
       socket.send(reply);
-      isReceieved = false; // reset it false 
-      
+      isReceieved = false; // reset it false  
     }
-
 }
-
 /**
   * isServerWorking
   * Return true if we are connected to the Python server then send
   * that answer to establishConnection in HitRun.
   */ 
 bool IPC::isServerWorking(){
-
-
   // running time measurement for recursive
     clock_t Rstart, Rfinish;
     double Rdur;
@@ -88,8 +83,6 @@ bool IPC::isServerWorking(){
     Rdur = (double)(Rfinish - Rstart);
     Rdur /= (CLOCKS_PER_SEC);
     std::cout << "running time in recursive : " << Rdur << std::endl;
-
-
 }
 /**
   * wasDataReceived
@@ -107,7 +100,6 @@ std::vector<int> IPC::getData(){
   //when IPC get the message(data) from python,
   //IPC also process it and send it to HIT AND RUN
   return vector_data;
-
 }
 
 /**
@@ -118,7 +110,6 @@ std::vector<int> IPC::getData(){
 int IPC::sendData(int integerData){
   //when HIT AND RUN send the data
   toPython = integerData;
-
 }
 std::vector<int> IPC::generateVector(std::string python_data) {
 

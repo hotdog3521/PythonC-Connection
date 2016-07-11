@@ -72,11 +72,6 @@ void printout() {
 
 
 	}
-	/*
-	for(int i = 0; i < recordVector.size(); i++) {
-		cout<<recordVector[i]<<endl;
-	}
-	*/
 }
 void runServer() {
 	test.startServer();
